@@ -61,15 +61,15 @@ public class ClientService : IClientService
         using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
         await connection.OpenAsync();
 
-        // Check if client has any trips
+        
         using var checkCommand = new SqlCommand("SELECT COUNT(*) FROM Client_Trip WHERE IdClient = @IdClient", connection);
         checkCommand.Parameters.AddWithValue("@IdClient", idClient);
         var count = (int)await checkCommand.ExecuteScalarAsync();
 
         if (count > 0)
-            return false; // Cannot delete
+            return false; 
 
-        // Safe to delete
+        
         using var deleteCommand = new SqlCommand("DELETE FROM Client WHERE IdClient = @IdClient", connection);
         deleteCommand.Parameters.AddWithValue("@IdClient", idClient);
         var rowsAffected = await deleteCommand.ExecuteNonQueryAsync();
