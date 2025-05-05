@@ -128,7 +128,7 @@ public class TripService : ITripService
 
     try
     {
-        // 1. Check if client exists
+        
         var clientCheck = new SqlCommand("SELECT 1 FROM Client WHERE IdClient = @IdClient", connection, transaction);
         clientCheck.Parameters.AddWithValue("@IdClient", clientId);
         if (await clientCheck.ExecuteScalarAsync() == null)
@@ -137,7 +137,7 @@ public class TripService : ITripService
             return false;
         }
 
-        // 2. Check if trip exists and capacity
+        
         var tripCheck = new SqlCommand("SELECT MaxPeople FROM Trip WHERE IdTrip = @IdTrip", connection, transaction);
         tripCheck.Parameters.AddWithValue("@IdTrip", tripId);
         var maxPeopleObj = await tripCheck.ExecuteScalarAsync();
@@ -157,7 +157,7 @@ public class TripService : ITripService
             return false;
         }
 
-        // 3. Check if client is already registered
+       
         var existingCheck = new SqlCommand("SELECT 1 FROM Client_Trip WHERE IdClient = @IdClient AND IdTrip = @IdTrip", connection, transaction);
         existingCheck.Parameters.AddWithValue("@IdClient", clientId);
         existingCheck.Parameters.AddWithValue("@IdTrip", tripId);
@@ -167,7 +167,7 @@ public class TripService : ITripService
             return false;
         }
 
-        // 4. Register
+       
         var insertCmd = new SqlCommand(@"
             INSERT INTO Client_Trip (IdClient, IdTrip, RegisteredAt)
             VALUES (@IdClient, @IdTrip, @RegisteredAt)", connection, transaction);
